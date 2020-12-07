@@ -1,0 +1,130 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: donationloggedin.html");
+    exit;
+}
+
+// Include config file
+require_once "config.php";
+
+
+$error = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+
+    $username =$_POST['username'];
+    $password =$_POST['password'];
+
+    mysqli_select_db($db);
+
+    $sql = "SELECT name,UserID,Username,Pass FROM USERS WHERE Username = '".$username."' AND pass = '".$password."' ";
+    $results = mysqli_query($db,$sql);
+    $numrows = mysqli_num_rows($results);
+    $row = mysqli_fetch_assoc($results);
+
+ // Check if username exists, if yes then verify password
+    if($numrows == 1){
+
+    // Password is correct, so start a new session
+        session_start();
+
+    // Store data in session variables
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"] = $row['UserID'];
+        $_SESSION["username"] = $username;
+        $_SESSION["name"] = $row["name"];
+
+    // Redirect user to welcome page
+    header("location: donationloggedin.html");
+    }
+    else{
+
+      $error = "Sorry your username/password was incorrect";
+
+    }
+    // Close connection
+    mysqli_close($db);
+}
+
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+
+?>
+
+
+<!DOCTYPE html>
+
+<html lang="en" class="html">
+<head>
+	<title> Log-in </title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="script.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+	<body>
+		<body>
+			<div class="sidenav">
+				<ul>
+					<li> <a href="homepage.html"> Homepage </a></li>
+					<!--<li> <a href="aboutus.html"> About Us</a></li>-->
+					<li> <a href="login.html" class="active"> Log-in or Register</a></li>
+					<li> <a href="donation.html"> Donate Today</a></li>
+					<li> <a href="profile.php"> Your Profile</a></li>
+
+				</ul>
+			</div>
+
+			<section>
+				<h1 class="h1"> Welcome Back </h1>
+				<p> Fill in your username and password to log in. If you have not yet made an account, click on the "Register an Account" link on the side. </p>
+			</section>
+
+			<section>
+				<form name="login" onsubmit="return validateForm()" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF"]); ?>
+					" method="post">
+					<br>
+					Username: <input type="text" name="username" />
+					<br>
+					<br>
+					Password: <input type="text" name="password" />
+					<br>
+					<br>
+					<input type="submit" />
+					<br>
+			</section>
+
+			<br>
+			<br>
+			<br>
+			<br>
+			<footer class="footer">
+				<address>
+					BC Children's Hospital Foundation &copy; <br>
+					<a href="mailto:clement_chow@sfu.ca"> Email us </a> <br>
+					<a href="tel:604.875.2444"> 604.875.2444 </a> <br>
+					8888 University Drive <br>
+				</address>
+			</footer>
+		</body>
+
+
+		<script type="text/javascript">function validateForm() {
+				var user = document.forms["login"]["username"].value;
+				var pass = document.forms["login"]["password"].value;
+				if (user == "" || pass == "") {
+					alert("Please enter password and/or username!");
+					return false;
+				}
+			}
+
+			function registrationFunction() {
+				location.replace("Project_registration.html")
+			}</script>
+
+
+</html>

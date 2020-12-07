@@ -1,0 +1,120 @@
+﻿'''
+$sql_payment = "SELECT * from paymentinfo where UserID = '.$_SESSION["id"].' AND expire_year > DATE_FORMAT(CURDATE(), '%y') AND expire_month > DATE_FORMAT(CURDATE(), '%m')";
+
+$results_payment = mysqli_query($db,$sql_payment);
+$numrows_expire = mysqli_num_rows($results_payment);
+$row_payment = mysqli_fetch_assoc($results_payment;
+
+if ($results_expire == 1){
+	$expire       = "Please update your information below, our records show that your credit card has expired.";
+	$creditname   ="TEST";
+	$creditcard   ="TEST";
+	$month        = 00;
+	$year         = 00;
+} else{
+
+$expire = ""
+$creditname   = $row_payment['creditcardname'];
+$creditcard   = $row_payment['creditcard'];
+$month        = $row_payment['expire_month'];
+$year         = $row_payment['expire_year'];
+
+
+} 
+'''
+'''
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    $creditnumber =$_POST['creditnumber'];
+    $password =$_POST['password'];
+
+    
+
+
+	$sql_1 =  "SELECT CREDITCARD FROM creditinfo WHERE userid = userid AND exprire < current date"
+
+	if
+
+row_num = 1
+
+    $sql  =  "INSERT INTO Donations VALUE(, donationid, donation_date, amount_CAD, receipt_number, DonorID)";
+
+ELSE
+
+
+$sql = "INSERT INTO Donations VALUE(, donationid, donation_date, amount_CAD, receipt_number, DonorID)";
+$sql = "INSERT INTO creditinfo VALUE(CREDIT CaRD INFO)
+
+
+    $results = mysqli_query($db,$sql);
+    $numrows = mysqli_num_rows($results);
+    $row = mysqli_fetch_assoc($results);
+
+ // Check if username exists, if yes then verify password
+    if($numrows == 1){
+
+    // Password is correct, so start a new session
+        session_start();
+
+    // Store data in session variables
+        $_SESSION["loggedin"] = true;
+        $_SESSION["id"]       = $row['UserID'];
+        $_SESSION["username"] = $username;
+        $_SESSION["name"]     = $row["name"];
+		$_SESSION["name"]     = $row["email"];
+
+    // Redirect user to welcome page
+    header("location: profile.php");
+    }
+    else{
+
+      $error = "Sorry your username/password was incorrect";
+
+    }
+    // Close connection
+    mysqli_close($db);
+}
+
+header('Cache-Control: no-cache, must-revalidate');
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+'''
+
+
+					<form name = "donateinfo" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+						<label>Credit Card Number</label><br>
+						<input type="text" required name = "creditnumber" value = "<?php echo htmlspecialchars($creditcard); ?>"> <br>
+
+						<label>Cardholder Name</label><br>
+						<input type="text" required value = "<?php echo htmlspecialchars($creditname); ?>"> <br>
+
+						<label>Expiry Date</label><br>
+						<input type="number" required value = "<?php echo htmlspecialchars($month); ?>" > <br>
+
+						<label>CVV</label><br>
+						<input type="number" required> <br>
+
+						<label> Amount (CAD)</label><br>
+						<input type="text" required> <br>
+
+						<label> Billing Address</label><br>
+						<input type="text" required> <br>
+
+						<label>First Name</label><br>
+						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["name"]); ?>"><br>
+
+						<label>Last Name</label><br>
+						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["name"]); ?>"> <br>
+
+						<label>Email</label><br>
+						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["name"]); ?>"> <br>
+
+
+
+						AND expire_year < DATE_FORMAT(CURDATE(), '%y') AND expire_month < DATE_FORMAT(CURDATE(), '%m')
+
+
+						AND expire_year >= DATE_FORMAT(CURRENT_DATE(), '%y') AND expire_month >= DATE_FORMAT(CURRENT_DATE(), '%m')
+
+
+						 pattern="(?:19|20)\[0-9\]{2}-(?:(?:0\[1-9\]|1\[0-2\])/(?:0\[1-9\]|1\[0-9\]|2\[0-9\])|(?:(?!02)(?:0\[1-9\]|1\[0-2\])/(?:30))|(?:(?:0\[13578\]|1\[02\])-31))" 
+          
