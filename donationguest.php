@@ -54,8 +54,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
         $row= mysqli_fetch_array($result_infonum);
         $info_num = $row["infonum"];
         $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','0','".++$info_num."')";
-    
-        // mysqli_query($db,$sql_donate);
+      
+        
+
+        mysqli_query($db,$sql_donate);
 
         // if (mysqli_query($db, $sql_info)) {
         //     echo "New record created successfully";

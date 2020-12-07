@@ -131,15 +131,49 @@ if($result = mysqli_query($db, $sql)){
 } 
 
 // Close connection
-mysqli_close($db);
+// mysqli_close($db);
 ?>
 </div>
 
 <br>
 
-<div>
+<div class = "light-grey center">
 
-Hello World
+<?php 
+
+require_once ("config.php");
+
+mysqli_select_db($db);
+
+
+echo "<br>";
+
+$sql = "SELECT count(distinct(UserID)) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM Donations";
+
+
+$result  = mysqli_query($db,$sql);
+
+$row = mysqli_fetch_array($result);
+
+echo mysqli_num_rows($row);
+
+echo "<strong>Number of Gifts</strong> <br>"; 
+echo $row['donation_total'];
+
+echo "<br><strong>Total Amount Given</strong><br>";
+
+echo '$';
+echo $row['donation_sum'];
+
+
+echo "<br><strong>Total Number of Donors</strong><br>";
+
+echo $row['contri'];
+
+mysqli_close($db)
+
+
+?>
 </div>
 
 </div>
@@ -167,3 +201,8 @@ $('#myTable').DataTable(); });
 	</address>
 </footer> -->
 </html>
+
+
+
+
+

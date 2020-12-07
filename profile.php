@@ -7,6 +7,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
+
 ?>
 
 
@@ -93,6 +95,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <table id="myTable" cellspacing="20" >
 <?php 
 
+
+
+$error = "";
 require_once ("config.php");
 
 mysqli_select_db($db);
@@ -120,36 +125,57 @@ if($result = mysqli_query($db, $sql)){
         // Free result set
         mysqli_free_result($result);
     } else{
-        echo "<h3> No Donations Yet! </h3>";
+
+		$error = "<h3> No Donations Yet! </h3>";
+		
+        echo $error;
     }
 } 
 
 // Close connection
-mysqli_close($db);
+// mysqli_close($db);
 ?>
 </div>
 
 <br>
 
-<div class = "light-grey">
+<div class = "light-grey center">
 
-<!-- <?php 
+<?php 
 
-mysqli_select_db($db);
-$sql_sum = "SELECT count(*) as donor_count ,sum(amount_cad) as donor_sum FROM Donations WHERE userid = '".$_SESSION['id']."' ";
-$result  = mysqli_query($db,$sql_sum);
-$row = mysqli_fetch_array($result);
+if($error !== "") {
 
-echo mysqli_num_rows($row);
+	mysqli_close($db);
+}else{
+	
+	
+	require_once ("config.php");
 
-echo "Number of Gifts";
-echo $row['donor_count'];
+	mysqli_select_db($db);
+	
+	
+	echo "<br>";
+	$sql = "SELECT count(donationid) as donation_total, sum(amount_cad) as donation_sum FROM Donations WHERE userid = '".$_SESSION['id']."' ";
+	
+	$result  = mysqli_query($db,$sql);
+	
+	$row = mysqli_fetch_array($result);
+	
+	echo mysqli_num_rows($row);
+	
+	echo "<strong>Number of Gifts</strong> <br>"; 
+	echo $row['donation_total'];
+	
+	echo "<br><strong>Total Amount Given</strong><br>";
+	
+	echo '$';
+	echo $row['donation_sum'];
+	mysqli_close($db);
+
+}
 
 
-mysqli_close($db)
-
-
-?> -->
+?>
 
 
 

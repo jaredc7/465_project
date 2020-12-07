@@ -60,7 +60,7 @@
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
 			<a href="donation.html" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
 			<a href="profile.php" class="bar-item button"><i class="fa fa-th"></i> Profile</a>
-			<a href="loggout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
+			<a href="login.php" class="bar-item button"><i class="fa fa-usd"></i> Log In</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
 		  </div>
 		</div>
