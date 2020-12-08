@@ -76,8 +76,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		  <div class="right hide-small">
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
 			<!-- <a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a> -->
-      <a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Donation Information </a>
-      <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> User Information</a>
+            <a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Donation Information</a>
+            <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> User Information</a>
 
 			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
@@ -99,7 +99,8 @@ require_once ("config.php");
 
 mysqli_select_db($db);
 
-$sql = "SELECT  * FROM Donations d LEFT JOIN Users u on d.UserId = u.UserId  ";
+$sql = "SELECT * FROM USERS u LEFT JOIN (SELECT userid, sum(amount_cad) as donation_sum,count(*) as donation_total FROM DONATIONS d GROUP BY USERID) d ON u.userid = d.userid
+HAVING u.userid != 6 ";
 
 // Attempt select query execution
 if($result = mysqli_query($db, $sql)){
@@ -109,9 +110,10 @@ if($result = mysqli_query($db, $sql)){
                 echo "<th>First Name</th>";
                 echo "<th>Last Name</th>";
                 echo "<th>Email</th>";
-                echo "<th>Donation Date</th>";
-                echo "<th>Amount</th>";
-                echo "<th>Receipt Number</th>";
+                echo "<th>Account Anniversory</th>";
+                echo "<th>Birthday</th>";
+                echo "<th>Total Gift Amount</th>";
+                echo "<th>Total Times Given</th>";
             echo "</tr>";
             echo "</thead><tbody>";
         while($row = mysqli_fetch_array($result)){
@@ -122,9 +124,10 @@ if($result = mysqli_query($db, $sql)){
                 echo "<td>" . $row['fname'] . "</td>";
                 echo "<td>" . $row['lname'] . "</td>";
                 echo "<td>" . $row['email'] . "</td>";
-                echo "<td>" . $row['donation_date'] . "</td>";
-                echo "<td>$" . $row['amount_cad'] . "</td>";
-                echo "<td>" . $row['donationid'] . "</td>";           					 
+                echo "<td>" . $row['created_at'] . "</td>";
+                echo "<td>" . $row['DOB'] . "</td>";
+                echo "<td>$" . $row['donation_sum'] . "</td>";
+                echo "<td>" . $row['donation_total'] . "</td>";           					 
             echo "</tr>";
           
         }
@@ -139,13 +142,13 @@ if($result = mysqli_query($db, $sql)){
 } 
 
 // Close connection
-// mysqli_close($db);
+mysqli_close($db);
 ?>
 </div>
 
 <br>
 
-<div class = "light-grey center">
+<!-- <div class = "light-grey center">
 
 <?php 
 
@@ -157,14 +160,14 @@ mysqli_select_db($db);
 echo "<br>";
 
 $sql = "SELECT count(distinct(UserID)) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM Donations";
-$sql_anon = "SELECT count(*) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM Donations WHERE userid = '0'";
+// $sql_anon = "SELECT count(*) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM Donations WHERE userid = '0'";
 
 
 $result  = mysqli_query($db,$sql);
 $row = mysqli_fetch_array($result);
 
-$result_anon = mysqli_query($db,$sql_anon);
-$row_anon = mysqli_fetch_array($result_anon);
+// $result_anon = mysqli_query($db,$sql_anon);
+// $row_anon = mysqli_fetch_array($result_anon);
 
 echo "<div class ='border-bottom'> Donation Statistics </div> ";
 
@@ -189,7 +192,7 @@ mysqli_close($db)
 
 
 ?>
-</div>
+</div> -->
 
 </div>
 
