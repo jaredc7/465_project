@@ -17,11 +17,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     mysqli_select_db($db);
     
-    $username   = $_POST["username"];
+    $username     = $_POST["username"];
     $sql_username = "SELECT * FROM Users WHERE Username = '".$username."' ";
 
 
-    $result_username = mysqli_query($db,$sql_username);
+    $result_username  = mysqli_query($db,$sql_username);
     $username_row_num = mysqli_num_rows($result_username);
 
     // Checks if username is taken 
@@ -66,8 +66,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         $sql_id = "SELECT * FROM USERS ORDER BY userid DESC LIMIT 1";
         $result = mysqli_query($db,$sql_id);
-        $row = mysqli_fetch_array($result);
-        $id = $row["userid"];
+        $row    = mysqli_fetch_array($result);
+        $id     = $row["userid"];
        
         $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','".$id."','".$info_num."')";
 

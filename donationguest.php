@@ -37,11 +37,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
     
         $creditnumber = $_POST["creditnumber"];
         $creditname   = $_POST["creditname"];
-        $year 		  =	$_POST["year"];
-        $month 		  =	$_POST["month"];
+        $year 		    =	$_POST["year"];
+        $month 		    =	$_POST["month"];
         
-        $amount 	  = $_POST["amount"];
-        $email 		  = $_POST["email"];
+        $amount 	    = $_POST["amount"];
+        $email 		    = $_POST["email"];
         $address      = $_POST["address"];
 
 
