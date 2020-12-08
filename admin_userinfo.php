@@ -77,7 +77,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
 			<!-- <a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a> -->
             <a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Donation Information</a>
-            <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> User Information</a>
+            <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> Donor Information</a>
 
 			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
@@ -91,7 +91,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <div class ="grid-container ">
 <div class ="light-grey large" >
-    <h2 class="h2"> Recent Activity </h2>
+    <h2 class="h2"> Donor Information </h2>
     <table id="myTable" cellspacing="20" >
 <?php 
 
