@@ -70,7 +70,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <div class="top">
 <div class="bar white card" id="myNavbar">
-		  <a href="homepage.html" class="bar-item button wide">MOVEMBER	  
+		  <a href="admin_profile.php" class="bar-item button wide">MOVEMBER	  
 		  </a>
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
@@ -177,11 +177,11 @@ echo '$';
 echo $row['donation_sum'];
 
 
-echo "<br><h2><strong>Number of Registered Donors</h2></strong>";
+echo "<br><h2><strong>Number of Registered Donors (Given)</h2></strong>";
 
 echo $row['contri'];
 
-echo "<br><h2><strong>Number of Anonymous Donors</h2></strong>";
+echo "<br><h2><strong>Number of Anonymous Donors (Given)</h2></strong>";
 
 echo $row_anon['contri'];
 

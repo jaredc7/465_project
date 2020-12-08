@@ -73,9 +73,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         mysqli_query($db,$sql_donate);
 
-
-      mysqli_close($db);
-
+        
 
       header("location: registrationconfirmation.html");
     

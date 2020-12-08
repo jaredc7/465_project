@@ -55,8 +55,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
         $info_num = $row["infonum"];
         $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','0','".++$info_num."')";
       
-        
-
         mysqli_query($db,$sql_donate);
 
         // if (mysqli_query($db, $sql_info)) {
@@ -157,31 +155,46 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 
 <div class="paymentinfo">
 <form name = "donateinfo" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+
+
+<h4> My Gift </h4>
+<label> Gift Amount</label><br>
+<input type="text" required name = "amount"> <br><br>
+
+<h4> Payment Information </h4>
 <label>Credit Card Number</label><br>
 <input type="text" required name = "creditnumber"> <br>
 <label>Cardholder Name</label><br>
 <input type="text" required name = "creditname"> <br>
-
 <label>Expiry Date</label><br>
 <?php echo $valid_error ?>
 <span class="expiration" style = '.expiration {border: 1px solid #bbbbbb;}.expiration input {border: 0;}'>    
 <input type="text" name="month" value = "<?php echo htmlspecialchars($month);?>" placeholder="MM" maxlength="2" size="3" /><span> /</span>    
 <input type="text" name="year"  value = "<?php echo htmlspecialchars($year); ?>" placeholder="YY" maxlength="2" size="3" /></span> <br>
-
 <label>CVV</label><br>
-<input type="number" required> <br>
-<label> Amount (CAD)</label><br>
-<input type="text" required name = "amount"> <br>
-<label> Billing Address</label><br>
-<input type="text" required name = "address"> <br>
+<input type="number" required> <br><br>
 
 
+<h4> My Information </h4>
 <label>First Name</label><br>
 <input type="text" required name = "fname"> <br>
 <label>Last Name</label><br>
 <input type="text" required name = "lname"> <br>
 <label>Email</label><br>
-<input type="text" required name = "email"> <br> <br>
+<input type="text" required name = "email"> <br>
+<label> Billing Address</label><br>
+<input type="text" required name = "address"> <br>
+
+
+
+
+
+<!-- <label>First Name</label><br>
+<input type="text" required name = "fname"> <br>
+<label>Last Name</label><br>
+<input type="text" required name = "lname"> <br>
+<label>Email</label><br>
+<input type="text" required name = "email"> <br> <br> -->
 <input type="checkbox" name = "register" > 
 <label>Check this box to register an account</label> <br>
 <br><button class="button black" type="submit"> Donate!</button>

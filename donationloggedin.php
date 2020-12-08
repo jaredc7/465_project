@@ -3,6 +3,29 @@
 
 session_start();
  
+
+$key = 'bRuD5WYw5wd0rdHR9yLlM6wt2vteuiniQBqE70nAuhU=';
+
+function my_encrypt($data , $key) {
+    // Remove the base64 encoding from our key
+    $encryption_key = base64_decode($key);
+    // Generate an initialization vector
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    // Encrypt the data using AES 256 encryption in CBC mode using our encryption key and initialization vector.
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $encryption_key, 0, $iv);
+    // The $iv is just as important as the key for decrypting, so save it with our encrypted data using a unique separator (::)
+    return base64_encode($encrypted . '::' . $iv);
+}
+
+function my_decrypt($data , $key) {
+    // Remove the base64 encoding from our key
+    $encryption_key = base64_decode($key);
+    // To decrypt, split the encrypted data from our IV - our unique separator used was "::"
+    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
+    return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+}
+
+
 // Check if the user is logged in, if not then redirect him to login page
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
@@ -37,14 +60,22 @@ if ($numrows_expire == 0 ){
 	$error        = "Please update your credit card information, our records indicate that it may no longer be valid. Thanks!";
 	$creditname   = $row_payment['creditcardname'];
 	$creditcard   = $row_payment['creditcard'];
+
+	$creditcard_hash   	= $row_payment['creditcard'];
+	$creditcard_decrypt = my_decrypt($creditcard_hash,$key);
+
 	$month        = $row_payment['expire_month'];
 	$year         = $row_payment['expire_year'];
 
 } else{
 
 $error = "";
-$creditname   = $row_payment['creditcardname'];
-$creditcard   = $row_payment['creditcard'];
+$creditname   	= $row_payment['creditcardname'];
+$creditcard 		= $row_payment['creditcard'];
+
+$creditcard_hash   	= $row_payment['creditcard'];
+$creditcard_decrypt = my_decrypt($creditcard_hash,$key);
+
 $month        = $row_payment['expire_month'];
 $year         = $row_payment['expire_year'];
 
@@ -54,9 +85,12 @@ $infonum	  = $row_payment['infonum'];
 $valid_error = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST" ){
+	
+	// $creditnumber = $_POST['creditnumber'];
 
+	$creditnumber_unhash = $_POST['creditnumber'];
+	$creditnumber = my_encrypt($creditnumber_unhash, $key);
 
-	$creditnumber = $_POST['creditnumber'];
 	$creditname   = $_POST['creditname'];
 	$year 		  =	$_POST['year'];
 	$month 		  =	$_POST['month'];
@@ -186,21 +220,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST" ){
 						<h4> My Information </h4>
 						<label>First Name</label><br>
 						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["fname"]); ?>"><br>
-
 						<label>Last Name</label><br>
 						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["lname"]); ?>"> <br>
-
 						<label>Email</label><br>
 						<input type="text" name = "email" required value = "<?php echo htmlspecialchars($_SESSION["email"]); ?>"><br>
 
+						
 						<label> Billing Address</label><br>
 						<input type="text" required name ="address" value = "<?php echo htmlspecialchars($_SESSION["address"]); ?>">
-						
 						<h4> Payment Information </h4>
 						<label>Cardholder Name</label><br>
 						<input type="text" required name = "creditname" value = "<?php echo htmlspecialchars($creditname); ?>"> <br>
 						<label>Credit Card Number</label><br>
-						<input type="number" required name = "creditnumber" value = "<?php echo htmlspecialchars($creditcard); ?>"> <br>
+						<input type="number" required name = "creditnumber" value = "<?php echo htmlspecialchars($creditcard_decrypt); ?>"> <br>
 						<label>Expiry Date</label><br>
 						<?php echo $valid_error ?>
 						<span class="expiration" style = '.expiration {border: 1px solid #bbbbbb;}.expiration input {border: 0;}'>    
