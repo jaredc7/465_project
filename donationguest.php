@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 
         // Unset all of the session variables
     
-        $creditnumber = $_POST["creditnumber"];
+        $creditnumber = my_ecrypt($_POST["creditnumber"].$key);
         $creditname   = $_POST["creditname"];
         $year 		    =	$_POST["year"];
         $month 		    =	$_POST["month"];
