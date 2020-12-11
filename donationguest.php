@@ -5,14 +5,14 @@ $error = "";
 $valid_error = "";
 
 require_once "config.php";
-
 $_SESSION = array();
+// Destroy the session.
+session_destroy();
+
+session_start();
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
-   
 
-    session_start();
-    
     $_SESSION["register"]     =  true;
     $_SESSION["email"]        =  $_POST["email"];
     $_SESSION["address"]      =  $_POST["address"];
@@ -29,13 +29,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
     header("location: register.php");  
 
     } elseif ($_SERVER["REQUEST_METHOD"] == "POST"){
-
-        session_start();
+    
         mysqli_select_db($db);
 
-        // Unset all of the session variables
-    
-        $creditnumber = my_ecrypt($_POST["creditnumber"].$key);
+        $creditnumber = my_encrypt($_POST["creditnumber"],$key);
         $creditname   = $_POST["creditname"];
         $year 		    =	$_POST["year"];
         $month 		    =	$_POST["month"];
@@ -48,21 +45,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
         $sql_info   = "INSERT INTO paymentinfo (creditcard,creditcardname,expire_month,expire_year,UserID,address) VALUES ('".$creditnumber."','".$creditname."', '".$month."','".$year."','0','".$address."') ";
         
         mysqli_query($db,$sql_info);
-        
-        $sql_infonum = "SELECT * FROM paymentinfo where UserID = 0 ORDER BY infonum DESC LIMIT 1";
-        $result_infonum = mysqli_query($db,$sql_infonum);
-        $row= mysqli_fetch_array($result_infonum);
-        $info_num = $row["infonum"];
-        $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','0','".++$info_num."')";
-      
-        mysqli_query($db,$sql_donate);
 
         // if (mysqli_query($db, $sql_info)) {
         //     echo "New record created successfully";
         //     } else {
         //     echo "Error: " . $sql_info . " <br>" . mysqli_error($db);
         //     }
+        
+        $sql_infonum = "SELECT * FROM paymentinfo where UserID = 0 ORDER BY infonum DESC LIMIT 1";
+        $result_infonum = mysqli_query($db,$sql_infonum);
+        $row= mysqli_fetch_assoc($result_infonum);
+        $info_num = $row['infonum'];
+        $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','0','".++$info_num."')";
+      
+        mysqli_query($db,$sql_donate);
 
+      
         // if (mysqli_query($db, $sql_donate)) {
         //     echo "New record created successfully";
         //     } else {               
@@ -83,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 <html lang="en" class="html">
 <head>
 	<title> Donation Page </title>
-    <link rel="stylesheet" href="style1.css" />
+    <!-- <link rel="stylesheet" href="style1.css" /> -->
 	<script src="script.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
     </head>
@@ -143,10 +141,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 <br>
 <br>
 <br>
+<br>
     <div class = "bgimg-1 display-container ">
 	<div class="light-grey display-middle " style="padding:50px;" id="login">
 <section>
-		<h1 class="h1"> Support the Mustache Today </h1>
+		<h1 class="h1 padding-top-64"> Support the Mustache Today </h1>
 		<p> Thank you once again for your kindness and caring - the Movember Foundation could not fulfill its mission without your support. </p>
 		<p> Please fill in the fields below to complete your donation:</p>
 </section>
@@ -162,10 +161,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 <input type="text" required name = "amount"> <br><br>
 
 <h4> Payment Information </h4>
-<label>Credit Card Number</label><br>
-<input type="text" required name = "creditnumber"> <br>
 <label>Cardholder Name</label><br>
 <input type="text" required name = "creditname"> <br>
+<label>Credit Card Number</label><br>
+<input type="text" required name = "creditnumber"> <br>
 <label>Expiry Date</label><br>
 <?php echo $valid_error ?>
 <span class="expiration" style = '.expiration {border: 1px solid #bbbbbb;}.expiration input {border: 0;}'>    
