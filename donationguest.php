@@ -81,7 +81,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 <html lang="en" class="html">
 <head>
 	<title> Donation Page </title>
-    <!-- <link rel="stylesheet" href="style1.css" /> -->
+    <link rel="stylesheet" href="style1.css" />
 	<script src="script.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
     </head>
