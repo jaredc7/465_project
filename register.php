@@ -10,7 +10,7 @@ if(!isset($_SESSION["register"]) && $_SESSION["register"] !== true){
     $error_donation = "";
 
 } else{
-  $error_donation= "Thank you for your gift!";
+  $error_donation= "Thank you for your gift! Finish registering to complete your donation.";
 }
 
 
