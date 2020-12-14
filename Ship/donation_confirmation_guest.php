@@ -1,20 +1,3 @@
-﻿<?php
-// Initialize the session
-session_start();
- 
-// Unset all of the session variables
-
-$_SESSION = array();
-// Destroy the session.
-session_destroy();
- 
-// Redirect to successfully logged out
-header("location: homepage.html");
-exit;
-
-
-?>
-
 
 <!DOCTYPE html>
 
@@ -39,7 +22,7 @@ exit;
 	.bgimg-1 {
 	  background-position: center;
 	  background-size: cover;
-	  background-image: url("mustache.png");
+	  background-image: url("mustache.jpg");
 	  min-height: 100%;
 	  image-rendering: auto;
 	}
@@ -47,6 +30,14 @@ exit;
 	.bar .button {
 	  padding: 16px;
 	}
+
+	mark {
+  background-color: black;
+  color: white;
+  font-size: 50pt;
+  font-weight: bold;
+  padding:5px; 
+}
 	</style>
 <body>
 	<!-- <div class="sidenav">
@@ -67,7 +58,7 @@ exit;
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
-			<a href="donation.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
+			<a href="donation.html" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
 			<a href="profile.php" class="bar-item button"><i class="fa fa-th"></i> Profile</a>
 			<a href="login.php" class="bar-item button"><i class="fa fa-usd"></i> Log In</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
@@ -76,11 +67,9 @@ exit;
 	</div>
 
 		  <header class="bgimg-1 display-container" id="home">
-			<div class="display-middle text-white" style="padding:48px">
-			  <span class="jumbo hide-small">Start something that matters</span><br>
-			  <span class="xxlarge hide-large hide-medium">Start something that matters</span><br>
-			  <span class="large">Stop wasting valuable time with projects that just isn't you.</span>
-			  <p><a href="donation.html" class="button white padding-large large margin-top opacity hover-opacity-off">Donate Now</a></p>
+			<div class="display-middle text-black" style="padding:48px">
+			  <span class="large"><mark>Thank you.</mark></span><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			  <span class="large">You just helped change the face of men's health!</span>
 			</div> 
 		  </header>
 

@@ -14,7 +14,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <html lang="en" class="html">
 <head>
-	<title> Movember Profile </title>
+	<title> Movember Admin Profile </title>
     <link rel="stylesheet" href="style1.css" />
 	<script src="jquery-3.2.1.min.js"></script>
 	<script src="jquery.dataTables.min.js"></script>	
@@ -70,13 +70,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <div class="top">
 <div class="bar white card" id="myNavbar">
-		  <a href="homepage_loggedin.php" class="bar-item button wide">MOVEMBER	  
+		  <a href="admin_profile.php" class="bar-item button wide">MOVEMBER	  
 		  </a>
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
-			<a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
-			<a href="profile.php" class="active bar-item button"><i class="fa fa-th"></i> Profile</a>
+			<!-- <a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a> -->
+            <a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Donation Information</a>
+            <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> Donor Information</a>
+
 			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
 		  </div>
@@ -88,8 +90,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <div class="jumbo text-black" style= "padding:60px 0 0 10px;">Welcome Back, <?php echo htmlspecialchars($_SESSION["fname"]); ?> </div><br>
 
 <div class ="grid-container ">
-<div class ="light-grey large">
-    <h2 class="h2"> Your Recent Activity </h2>
+<div class ="light-grey large" >
+    <h2 class="h2"> Donor Information </h2>
     <table id="myTable" cellspacing="20" >
 <?php 
 
@@ -97,26 +99,41 @@ require_once ("config.php");
 
 mysqli_select_db($db);
 
-$sql = "SELECT donationid, donation_date, amount_cad FROM Donations WHERE userid = '".$_SESSION['id']."' ";
+$sql = "SELECT * FROM Users u LEFT JOIN (SELECT UserID, sum(amount_cad) as donation_sum,count(*) as donation_total FROM donations d GROUP BY UserID) d ON u.UserID = d.UserID
+HAVING u.userid != 6 ";
 
 // Attempt select query execution
 if($result = mysqli_query($db, $sql)){
     if(mysqli_num_rows($result) > 0){
         echo "<thead>";
             echo "<tr>";
-                echo "<th>Donation Date</th>";
-                echo "<th>Amount</th>";
-                echo "<th>Receipt Number</th>";
+                echo "<th>First Name</th>";
+                echo "<th>Last Name</th>";
+                echo "<th>Email</th>";
+                echo "<th>Account Anniversory</th>";
+                echo "<th>Birthday</th>";
+                echo "<th>Total Gift Amount</th>";
+                echo "<th>Total Times Given</th>";
             echo "</tr>";
             echo "</thead><tbody>";
         while($row = mysqli_fetch_array($result)){
-            echo "<tr>";
-                echo "<td>" . $row['donation_date'] . "</td>";
-                echo "<td>$" . $row['amount_cad'] . "</td>";
-                echo "<td>" . $row['donationid'] . "</td>";           					 
+
+       
+
+                echo "<tr>";
+                echo "<td>" . $row['fname'] . "</td>";
+                echo "<td>" . $row['lname'] . "</td>";
+                echo "<td>" . $row['email'] . "</td>";
+                echo "<td>" . $row['created_at'] . "</td>";
+                echo "<td>" . $row['DOB'] . "</td>";
+                echo "<td>$" . $row['donation_sum'] . "</td>";
+                echo "<td>" . $row['donation_total'] . "</td>";           					 
             echo "</tr>";
+          
         }
         echo "</tbody></table>";
+
+
         // Free result set
         mysqli_free_result($result);
     } else{
@@ -131,29 +148,51 @@ mysqli_close($db);
 
 <br>
 
-<div class = "light-grey">
+<!-- <div class = "light-grey center">
 
-<!-- <?php 
+<?php 
+
+require_once ("config.php");
 
 mysqli_select_db($db);
-$sql_sum = "SELECT count(*) as donor_count ,sum(amount_cad) as donor_sum FROM Donations WHERE userid = '".$_SESSION['id']."' ";
-$result  = mysqli_query($db,$sql_sum);
+
+
+echo "<br>";
+
+$sql = "SELECT count(distinct(UserID)) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM donations";
+// $sql_anon = "SELECT count(*) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM Donations WHERE userid = '0'";
+
+
+$result  = mysqli_query($db,$sql);
 $row = mysqli_fetch_array($result);
 
-echo mysqli_num_rows($row);
+// $result_anon = mysqli_query($db,$sql_anon);
+// $row_anon = mysqli_fetch_array($result_anon);
 
-echo "Number of Gifts";
-echo $row['donor_count'];
+echo "<div class ='border-bottom'> Donation Statistics </div> ";
 
+echo "<strong><h2>Number of Gifts</h2></strong>"; 
+echo $row['donation_total'];
+
+echo "<br><strong><h2>Total Amount Given</h2></strong>";
+
+echo '$';
+echo $row['donation_sum'];
+
+
+echo "<br><h2><strong>Number of Registered Donors</h2></strong>";
+
+echo $row['contri'];
+
+echo "<br><h2><strong>Number of Anonymous Donors</h2></strong>";
+
+echo $row_anon['contri'];
 
 mysqli_close($db)
 
 
-?> -->
-
-
-
-</div>
+?>
+</div> -->
 
 </div>
 
@@ -180,3 +219,8 @@ $('#myTable').DataTable(); });
 	</address>
 </footer> -->
 </html>
+
+
+
+
+

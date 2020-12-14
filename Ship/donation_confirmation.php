@@ -1,4 +1,15 @@
 
+<?php
+// Initialize the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+	exit;
+} 
+?>
+
 <!DOCTYPE html>
 
 <html lang="en" class="html">
@@ -52,15 +63,13 @@
 
 	<div class="top">
 		<div class="bar white card" id="myNavbar">
-		  <a href="homepage.html" class="bar-item button wide">MOVEMBER
-			  
-		  </a>
+		  <a href="homepage.html" class="bar-item button wide">MOVEMBER</a>
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
-			<a href="donation.html" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
+			<a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
 			<a href="profile.php" class="bar-item button"><i class="fa fa-th"></i> Profile</a>
-			<a href="loggout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
+			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
 		  </div>
 		</div>

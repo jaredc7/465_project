@@ -3,6 +3,7 @@
 
 session_start();
  
+
 // Check if the user is logged in, if not then redirect him to login page
 
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
@@ -37,14 +38,22 @@ if ($numrows_expire == 0 ){
 	$error        = "Please update your credit card information, our records indicate that it may no longer be valid. Thanks!";
 	$creditname   = $row_payment['creditcardname'];
 	$creditcard   = $row_payment['creditcard'];
+
+	$creditcard_hash   	= $row_payment['creditcard'];
+	$creditcard_decrypt = my_decrypt($creditcard_hash,$key);
+
 	$month        = $row_payment['expire_month'];
 	$year         = $row_payment['expire_year'];
 
 } else{
 
 $error = "";
-$creditname   = $row_payment['creditcardname'];
-$creditcard   = $row_payment['creditcard'];
+$creditname   	= $row_payment['creditcardname'];
+$creditcard 		= $row_payment['creditcard'];
+
+$creditcard_hash   	= $row_payment['creditcard'];
+$creditcard_decrypt = my_decrypt($creditcard_hash,$key);
+
 $month        = $row_payment['expire_month'];
 $year         = $row_payment['expire_year'];
 
@@ -54,9 +63,12 @@ $infonum	  = $row_payment['infonum'];
 $valid_error = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST" ){
+	
+	// $creditnumber = $_POST['creditnumber'];
 
+	$creditnumber_unhash = $_POST['creditnumber'];
+	$creditnumber = my_encrypt($creditnumber_unhash, $key);
 
-	$creditnumber = $_POST['creditnumber'];
 	$creditname   = $_POST['creditname'];
 	$year 		  =	$_POST['year'];
 	$month 		  =	$_POST['month'];
@@ -83,7 +95,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" ){
 
 	$infonum	  = $row_payment['infonum'];
 
-	$sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','".$id."','".$infonum."')";
+	$sql_donate = "INSERT INTO donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','".$id."','".$infonum."')";
 
 	mysqli_query($db,$sql_donate);
 
@@ -186,21 +198,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST" ){
 						<h4> My Information </h4>
 						<label>First Name</label><br>
 						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["fname"]); ?>"><br>
-
 						<label>Last Name</label><br>
 						<input type="text" required value = "<?php echo htmlspecialchars($_SESSION["lname"]); ?>"> <br>
-
 						<label>Email</label><br>
 						<input type="text" name = "email" required value = "<?php echo htmlspecialchars($_SESSION["email"]); ?>"><br>
 
+						
 						<label> Billing Address</label><br>
 						<input type="text" required name ="address" value = "<?php echo htmlspecialchars($_SESSION["address"]); ?>">
-						
 						<h4> Payment Information </h4>
 						<label>Cardholder Name</label><br>
 						<input type="text" required name = "creditname" value = "<?php echo htmlspecialchars($creditname); ?>"> <br>
 						<label>Credit Card Number</label><br>
-						<input type="number" required name = "creditnumber" value = "<?php echo htmlspecialchars($creditcard); ?>"> <br>
+						<input type="number" required name = "creditnumber" value = "<?php echo htmlspecialchars($creditcard_decrypt); ?>"> <br>
 						<label>Expiry Date</label><br>
 						<?php echo $valid_error ?>
 						<span class="expiration" style = '.expiration {border: 1px solid #bbbbbb;}.expiration input {border: 0;}'>    

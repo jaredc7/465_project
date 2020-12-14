@@ -70,13 +70,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <div class="top">
 <div class="bar white card" id="myNavbar">
-		  <a href="homepage.html" class="bar-item button wide">MOVEMBER	  
+		  <a href="admin_profile.php" class="bar-item button wide">MOVEMBER	  
 		  </a>
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
 			<!-- <a href="donationloggedin.php" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a> -->
-			<a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Profile</a>
+      <a href="admin_profile.php" class="active bar-item button"><i class="fa fa-th"></i> Donation Information </a>
+      <a href="admin_userinfo.php" class="active bar-item button"><i class="fa fa-th"></i> Donor Information</a>
+
 			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
 		  </div>
@@ -89,7 +91,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <div class ="grid-container ">
 <div class ="light-grey large" >
-    <h2 class="h2"> Your Recent Activity </h2>
+    <h2 class="h2"> Recent Activity </h2>
     <table id="myTable" cellspacing="20" >
 <?php 
 
@@ -97,7 +99,7 @@ require_once ("config.php");
 
 mysqli_select_db($db);
 
-$sql = "SELECT * FROM Donations d LEFT JOIN Users u on d.UserId = u.UserId  ";
+$sql = "SELECT  * FROM donations d LEFT JOIN Users u on d.UserID = u.UserID  ";
 
 // Attempt select query execution
 if($result = mysqli_query($db, $sql)){
@@ -113,7 +115,10 @@ if($result = mysqli_query($db, $sql)){
             echo "</tr>";
             echo "</thead><tbody>";
         while($row = mysqli_fetch_array($result)){
-            echo "<tr>";
+
+       
+
+                echo "<tr>";
                 echo "<td>" . $row['fname'] . "</td>";
                 echo "<td>" . $row['lname'] . "</td>";
                 echo "<td>" . $row['email'] . "</td>";
@@ -121,8 +126,11 @@ if($result = mysqli_query($db, $sql)){
                 echo "<td>$" . $row['amount_cad'] . "</td>";
                 echo "<td>" . $row['donationid'] . "</td>";           					 
             echo "</tr>";
+          
         }
         echo "</tbody></table>";
+
+
         // Free result set
         mysqli_free_result($result);
     } else{
@@ -131,15 +139,56 @@ if($result = mysqli_query($db, $sql)){
 } 
 
 // Close connection
-mysqli_close($db);
+// mysqli_close($db);
 ?>
 </div>
 
 <br>
 
-<div>
+<div class = "light-grey center">
 
-Hello World
+<?php 
+
+require_once ("config.php");
+
+mysqli_select_db($db);
+
+
+echo "<br>";
+
+$sql = "SELECT count(distinct(UserID)) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM donations";
+$sql_anon = "SELECT count(*) as contri, count(*) as donation_total, sum(amount_cad) as donation_sum FROM donations WHERE UserID = '0'";
+
+
+$result  = mysqli_query($db,$sql);
+$row = mysqli_fetch_array($result);
+
+$result_anon = mysqli_query($db,$sql_anon);
+$row_anon = mysqli_fetch_array($result_anon);
+
+echo "<div class ='border-bottom'> Donation Statistics </div> ";
+
+echo "<strong><h2>Number of Gifts</h2></strong>"; 
+echo $row['donation_total'];
+
+echo "<br><strong><h2>Total Amount Given</h2></strong>";
+
+echo '$';
+echo $row['donation_sum'];
+
+
+echo "<br><h2><strong>Number of Registered Donors (Given)</h2></strong>";
+
+echo $row['contri'];
+
+echo "<br><h2><strong>Number of Anonymous Donors (Given)</h2></strong>";
+
+echo $row_anon['contri'];
+
+mysqli_close($db)
+
+
+?>
 </div>
 
 </div>
@@ -167,3 +216,8 @@ $('#myTable').DataTable(); });
 	</address>
 </footer> -->
 </html>
+
+
+
+
+

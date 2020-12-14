@@ -7,7 +7,10 @@ $error = "";
 if(!isset($_SESSION["register"]) && $_SESSION["register"] !== true){
 
     $_SESSION = array();
+    $error_donation = "";
 
+} else{
+  $error_donation= "Thank you for your gift! Finish registering to complete your donation.";
 }
 
 
@@ -17,11 +20,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     mysqli_select_db($db);
     
-    $username   = $_POST["username"];
+    $username     = $_POST["username"];
     $sql_username = "SELECT * FROM Users WHERE Username = '".$username."' ";
 
 
-    $result_username = mysqli_query($db,$sql_username);
+    $result_username  = mysqli_query($db,$sql_username);
     $username_row_num = mysqli_num_rows($result_username);
 
     // Checks if username is taken 
@@ -47,8 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			// echo "Error: " . $sql_user . "  <br>" . mysqli_error($db);
 		  // }
 
-  
-        $creditnumber = $_SESSION["creditnumber"];
+        $creditnumber = my_encrypt($_SESSION["creditnumber"],$key);
         $creditname   = $_SESSION["creditname"];
         $year 		    =	$_SESSION["year"];
         $month 		    =	$_SESSION["month"];
@@ -62,24 +64,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $sql_infonum  = "SELECT * FROM paymentinfo ORDER BY infonum DESC LIMIT 1";
 
         $result_infonum = mysqli_query($db,$sql_infonum);
-        $info_num       = mysqli_num_rows($result_infonum);
+        $row_infonum = mysqli_fetch_array($result_infonum);  
+        $info_num = $row_infonum['infonum'];
+        // $info_num       = mysqli_num_rows($result_infonum);
         
-        $sql_id = "SELECT * FROM USERS ORDER BY userid DESC LIMIT 1";
+        $sql_id = "SELECT * FROM Users ORDER BY UserID DESC LIMIT 1";
         $result = mysqli_query($db,$sql_id);
-        $row = mysqli_fetch_array($result);
-        $id = $row["userid"];
+        
+        $row    = mysqli_fetch_array($result);
+        $id     = $row['UserID'];
        
-        $sql_donate = "INSERT INTO Donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','".$id."','".$info_num."')";
+        $sql_donate = "INSERT INTO donations (donation_date,amount_cad,email,UserID,infonum)  VALUES (CURDATE(),'".$amount."','".$email."','".$id."','".$info_num."')";
 
         mysqli_query($db,$sql_donate);
 
+      // if (mysqli_query($db, $sql_donate) ) {
+			// echo "New record created successfully";
+		  // } else {
+			// echo "Error: " . $sql_donate . "  <br>" . mysqli_error($db);
+		  // }
+    
+      $_SESSION = array();
 
-      mysqli_close($db);
-
+      session_destroy();
 
       header("location: registrationconfirmation.html");
-    
-        
+
+      
     } else{
 
         $error = "Sorry that username is already taken!";
@@ -87,6 +98,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     mysqli_close($db);
+
+   
 }
 
 
@@ -98,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
 	<meta charset="UTF-8" />
 	<title> Movember </title>
-    <link rel="stylesheet" href="style1.css" />
+  <link rel="stylesheet" href="style1.css" />
 	<!-- <script src="script.js"></script> -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
 	</head>
@@ -153,13 +166,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   <div class = "bgimg-1 display-container ">
 <div class="light-grey display-middle " style="padding:48px" id="contact">
+
+<h4> <?php echo $error_donation ?> </h4>
+
   <h3 class="center">Registration</h3>
   <p class="center large">To complete your registration, please fill in your information below.</p>
   <div style="margin-top:48px">
     <!-- <p><i class="fa fa-map-marker fa-fw xxlarge margin-right"></i> Chicago, US</p>
     <p><i class="fa fa-phone fa-fw xxlarge margin-right"></i> Phone: +00 151515</p>
     <p><i class="fa fa-envelope fa-fw xxlarge margin-right"> </i> Email: mail@mail.com</p> -->
-
   <form name = "register" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" onsubmit ="return validateForm()">
       <table border="0">
         <tr bgcolor=#D3D3D3>

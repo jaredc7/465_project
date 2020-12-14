@@ -22,10 +22,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     mysqli_select_db($db);
 
-    $sql = "SELECT fname,lname,UserID,Username,Pass,email,address FROM USERS WHERE Username = '".$username."' ";
+	$sql = "SELECT fname,lname,UserID,Username,Pass,email,address FROM Users WHERE Username = '".$username."' ";
+	
+
     $results = mysqli_query($db,$sql);
     $numrows = mysqli_num_rows($results);
-	$row = mysqli_fetch_assoc($results);
+	$row 	 = mysqli_fetch_assoc($results);
 
  // Check if username exists, if yes then verify password
     if($numrows == 1 && password_verify($password,$row["Pass"])){
@@ -43,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		$_SESSION["address"]  = $row["address"];
 
 	// Redirect user to welcome page
-		if($username == "Admin"){
+		if($username == "Admin" || $username == "admin"){
 
 		header("location: admin_profile.php");
 
