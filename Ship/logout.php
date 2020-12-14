@@ -9,6 +9,6 @@ $_SESSION = array();
 session_destroy();
  
 // Redirect to successfully logged out
-header("location: homepage.html");
+header("location: index.html");
 exit;
 ?>

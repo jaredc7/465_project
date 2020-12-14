@@ -1,3 +1,16 @@
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: profile.php");
+	exit;
+
+}
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en" class="html">
@@ -21,7 +34,7 @@
 	.bgimg-1 {
 	  background-position: center;
 	  background-size: cover;
-	  background-image: url("white.jpg");
+	  background-image: url("mustache.png");
 	  min-height: 100%;
 	}
 	
@@ -32,7 +45,7 @@
 <body>
 	<div class="top">
 		<div class="bar white card" id="myNavbar">
-		  <a href="index.html" class="bar-item button wide">MOVEMBER
+		  <a href="homepage_loggedin.php" class="bar-item button wide">MOVEMBER
 			  
 		  </a>
 		  <!-- Right-sided navbar links -->
@@ -40,7 +53,7 @@
 			<!-- <a href="about" class="bar-item button">ABOUT</a> -->
 			<a href="donation.html" class="bar-item button"><i class="fa fa-user"></i> Donate Now</a>
 			<a href="profile.php" class="bar-item button"><i class="fa fa-th"></i> Profile</a>
-			<a href="login.php" class="bar-item button"><i class="fa fa-usd"></i> Log In</a>
+			<a href="logout.php" class="bar-item button"><i class="fa fa-usd"></i> Sign Out</a>
 			<!-- <a href="#contact" class="bar-item button"><i class="fa fa-envelope"></i> CONTACT</a> -->
 		  </div>
 		</div>
@@ -58,18 +71,18 @@
 
 
 <header class="bgimg-1 display-container " id="home">
-	<div class="display-middle text-black" style="padding:48px">
-	  <span class="xxlarge hide-small">Support your Mustache Today</span><br>
+	<div class="display-middle text-white" style="padding:48px">
+	  <span class="jumbo hide-small">Support the Children Today</span><br>
 	  <span class="">Already a member? Click the "Log-in to Donate" button below to start your donation.</span><br>
-	  <span class="">If you are new to Movember or would like to donate as a guest, follow the "Continue as Guest" button below.</span> 
+	  <span class="">If you are new to BC Children's Hospital Foundation or would like to donate as a guest, follow the "Continue as Guest" button below.</span> 
 		
 	  <!-- <button class="button" id="button1login" onclick="location.href='donationloggedin.php'"><span>Log-in to Donate </span></button>
 	  <div class="divider"></div>
 	  <button class="button" onclick= "location.href='donationguest.php'" ><span>Continue as Guest </span></button> -->
 	
 
-	  <p><a href="donationloggedin.php" class="button black padding-large large margin-top opacity hover-opacity-off">Log-in to Donate Now</a></p>
-	  <p><a href="donationguest.php"    class="button black padding-large large margin-top opacity hover-opacity-off">Continue as a Guest</a></p>
+	  <p><a href="donationloggedin.php" class="button white padding-large large margin-top opacity hover-opacity-off">Log-in to Donate Now</a></p>
+	  <p><a href="donationguest.php"    class="button white padding-large large margin-top opacity hover-opacity-off">Continue as a Guest</a></p>
 	</div> 
   </header>
 
@@ -93,13 +106,13 @@
 <br>
 <br>
 <br>
-<!-- <footer class="footer">
+<footer class="footer">
 	<address>
 	BC Children's Hospital Foundation &copy; <br>
 	<a href="mailto:clement_chow@sfu.ca"> Email us </a> <br>
 	<a href="tel:604.875.2444"> 604.875.2444 </a> <br>
 	8888 University Drive <br>
 	</address>
-</footer> -->
+</footer>
 </body>
 </html>

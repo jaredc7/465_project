@@ -168,20 +168,20 @@ $row_anon = mysqli_fetch_array($result_anon);
 
 echo "<div class ='border-bottom'> Donation Statistics </div> ";
 
-echo "<strong><h2>Number of Gifts</h2></strong>"; 
+echo "<h2>Number of Gifts</h2>"; 
 echo $row['donation_total'];
 
-echo "<br><strong><h2>Total Amount Given</h2></strong>";
+echo "<br><h2>Total Amount Given</h2>";
 
 echo '$';
 echo $row['donation_sum'];
 
 
-echo "<br><h2><strong>Number of Registered Donors (Given)</h2></strong>";
+echo "<br><h2>Number of Registered Donors (Given)</h2>";
 
 echo $row['contri'];
 
-echo "<br><h2><strong>Number of Anonymous Donors (Given)</h2></strong>";
+echo "<br><h2>Number of Anonymous Donors (Given)</h2>";
 
 echo $row_anon['contri'];
 

@@ -150,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			</div> -->
 			<div class="top">
 <div class="bar white card" id="myNavbar">
-		  <a href="homepage.html" class="bar-item button wide">MOVEMBER	  
+		  <a href="index.html" class="bar-item button wide">MOVEMBER	  
 		  </a>
 		  <!-- Right-sided navbar links -->
 		  <div class="right hide-small">
