@@ -178,12 +178,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" ){
 <br>
 <br>
 <br>
-<br>
+<br>	<div class = "spacer margin-top"></div>
 	<div class = "bgimg-1 display-container " >
 	<div class="light-grey display-middle" style="padding:50px;" id="donation">
 
 				<h1 class="h1 padding-top-32"> Support the Mustache </h1>
-				<p> Welcome back <?php echo htmlspecialchars($_SESSION["name"]); ?></b>. Thank you once again for your kindness and caring - Movember Foundation could not fulfill its mission without your support. </p>
+				<p> Welcome back <?php echo htmlspecialchars($_SESSION["fname"]); ?></b>. Thank you once again for your kindness and caring - Movember Foundation could not fulfill its mission without your support. </p>
 				<p> Please fill in the fields below to complete your donation:</p>
 
 				<br><?php echo $error;?>

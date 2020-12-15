@@ -142,6 +142,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["register"])){
 <br>
 <br>
 <br>
+<div class = "spacer margin-top"></div>
     <div class = "bgimg-1 display-container ">
 	<div class="light-grey display-middle " style="padding:50px;" id="login">
 <section>
